@@ -1,0 +1,13 @@
+[MESSAGES CONTROL]
+disable = C0330, C0326, C0103
+
+[format]
+max-line-length = 88
+class-naming-style = PascalCase
+module-naming-style = PascalCase
+
+[similarities]
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
+ignore-signatures=yes
