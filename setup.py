@@ -10,7 +10,7 @@ version_info = {}
 with open(version_file, "r") as f:
     exec(f.read(), version_info)
 
-dev_requirements = ["coverage", "pre-commit", "pytest", "pytest-cov", "tox"]
+dev_requirements = ["coverage", "pre-commit", "pytest", "pytest-cov", "tox", "responses"]
 
 setup(
     name=version_info["__title__"].lower(),
@@ -18,14 +18,12 @@ setup(
     packages=find_packages("src", exclude=["test"]),
     package_dir={"": "src"},
     description=f"{version_info['__title__']} is a thin wrapper on top of the StartGG GraphQL APIs",
-    long_description=open(descr_file).read(),
+    long_description="Start.gg GraphQL wrapper",
     author="Lucky Daisy LLC",
     url="https://github.com/Caja-de-Dano/StartGG-API",
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: Text Processing",
-        "Topic :: Games/Entertainment :: Fighting",
+        "Topic :: Software Development :: Libraries :: Python Modules"
     ],
     license="MIT",
     install_requires=["requests"],

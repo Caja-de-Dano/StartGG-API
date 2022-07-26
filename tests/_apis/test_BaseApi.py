@@ -19,6 +19,9 @@ class TestBaseApi:
 
         mock_post.assert_called_once_with(
             expected_url,
-            headers={'Content-Type': 'application/json', 'Authorization': 'Bearer test-api'},
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer test-api"
+            },
             json=expected_query_params
         )

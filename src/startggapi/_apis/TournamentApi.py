@@ -1,5 +1,5 @@
 import json, time
-from .QueryStrings import query_by_distance, query_by_distance_and_time
+from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_event_id
 
 class TournamentApi:
     """
@@ -12,15 +12,31 @@ class TournamentApi:
         :param BaseApi base_api: the root API object for making all requests.
         """
         self._base = base_api
-    
+
+    def find_events_by_tournament_slug(
+            self,
+            tourney_slug: str
+    ):
+        """
+        FUNCTION INFO HERE
+        """
+        data = {
+            "variables": {
+                "slug": tourney_slug
+            },
+            "query": tournament_query_by_event_id
+        }
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        return json.loads(response.content)["data"]["tournament"]["events"]
+
     def find_by_coords(
-        self,
-        coords: str,
-        before_date=None,
-        after_date=None,
-        per_page=None,
-        radius=None
-        ):
+            self,
+            coords: str,
+            before_date=None,
+            after_date=None,
+            per_page=None,
+            radius=None
+    ):
         """
         This function returns a list of tournaments by a given location
         :param string coords:            Lat,Lng string

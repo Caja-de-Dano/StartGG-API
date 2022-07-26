@@ -1,3 +1,16 @@
+tournament_query_by_event_id = """
+    query FindEventId($slug: String!) {
+        tournament(slug: $slug) {
+            id
+            name
+            events {
+                id
+                name
+            }
+        }
+    }
+"""
+
 query_by_distance = """
   query Tournaments($perPage: Int, $coordinates: String!, $radius: String!) {
     tournaments(query: {
@@ -20,6 +33,7 @@ query_by_distance = """
     }
   }
 """
+
 query_by_distance_and_time = """
   query Tournaments($perPage: Int, $coordinates: String!, $radius: String!, $beforeDate: Timestamp!, $afterDate: Timestamp!) {
     tournaments(query: {
@@ -43,4 +57,53 @@ query_by_distance_and_time = """
       }
     }
   }
+"""
+
+event_entrants_query = """
+  query EventEntrants($eventId: ID!, $page: Int!, $perPage: Int!) {
+    event(id: $eventId) {
+      id
+      name
+      entrants(query: {
+        page: $page
+        perPage: $perPage
+      }) {
+        pageInfo {
+          total
+          totalPages
+        }
+        nodes {
+          id
+          participants {
+            id
+            gamerTag
+            user {
+              authorizations {
+                type
+                externalUsername
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+"""
+
+event_details_query = """
+    query EventDetails($eventId: ID!) {
+        event(id: $eventId) {
+            id
+            name
+            competitionTier
+            isOnline
+            numEntrants
+            prizingInfo
+            rulesMarkdown
+            rulesetId
+            slug
+            startAt
+            state
+        }
+    }
 """

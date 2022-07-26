@@ -1,17 +1,33 @@
 import pytest, datetime
 from startggapi import StartGGAPI
 
-@pytest.mark.common
-@pytest.mark.unit
+api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
+
+@pytest.mark.skip()
 def test_search_by_coords_and_time():
     before_date = datetime.datetime.now() - datetime.timedelta(days=12)
     after_date = datetime.datetime.now() - datetime.timedelta(days=14)
-    api = StartGGAPI("FAKE_KEY")
     response = api.tournament.find_by_coords("38.61593,-121.4760205", before_date=before_date, after_date=after_date)
-    assert len(response['data']['tournaments']['nodes']) is 2
+    assert len(response["data"]["tournaments"]["nodes"]) is 3
 
-# def test_find_by_coords_with_defaults():
-    # just send with coords
+@pytest.mark.skip()
+def test_attendee_list():
+    expected_event_id = 78790
+    api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
+    response = api.entrant.find_all(78790)
+    assert response["data"]["event"]["id"] == expected_event_id
 
-# def test_find_by_coords_with_limit():
-    # just send with coords
+def test_event_details():
+    expected_event_id = 736029
+    api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
+    response = api.event.find_all_entrants(736029)
+    assert len(response) == expected_event_id
+
+# TournamentApi tests
+@pytest.mark.skip()
+def test_find_by_tourney_slug():
+    expected_event_id = 78790
+    api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
+    response = api.tournament.find_events_by_tournament_slug("shine-2018")
+    assert type(response) == list
+    assert response[0].keys() == ["name", "id"]
