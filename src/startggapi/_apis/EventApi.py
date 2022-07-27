@@ -1,6 +1,6 @@
 import json
 
-from .QueryStrings import event_entrants_query, event_details_query
+from .QueryStrings import event_entrants_query, event_details_query, sets_query_by_event_id
 
 class EventApi:
     """
@@ -75,3 +75,21 @@ class EventApi:
         #return json.loads(response.content)["data"]["event"]["entrants"]["nodes"]
         return entrant_list
 
+    def fetch_sets(
+        self,
+        event_id,
+        ):
+        """
+        Returns a list of Sets for the event_id
+        :param event_id
+        """
+        set_list = []
+        data = {
+            "variables": {
+                "eventId": str(event_id)
+            },
+            "query": sets_query_by_event_id
+        }
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        response_json = json.loads(response.content)
+        return response_json["data"]["event"]["sets"]["nodes"]

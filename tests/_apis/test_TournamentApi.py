@@ -35,3 +35,7 @@ class TestTournamentApi:
             expected_data
         )
         assert ret == expected_return
+
+    # def test_find_all_event_ids_by_slug(self):
+    #     ret = tournament.find_events_by_tournament_slug("mixed-up-2")
+    #     assert ret == 1

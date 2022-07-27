@@ -1,3 +1,26 @@
+sets_query_by_event_id = """
+  query FindSets($eventId: ID!) {
+    event(id: $eventId) {
+      sets(
+        page: 1,
+        perPage: 100,
+        sortType: STANDARD
+      ) {
+        nodes {
+          round
+          fullRoundText
+          slots {
+            entrant {
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+
+"""
+
 tournament_query_by_event_id = """
     query FindEventId($slug: String!) {
         tournament(slug: $slug) {

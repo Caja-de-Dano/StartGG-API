@@ -3,7 +3,8 @@ from .QueryStrings import query_by_distance, query_by_distance_and_time, tournam
 
 class TournamentApi:
     """
-    This class wraps the Tournaments query
+    This class wraps the Tournament object query
+    https://developer.start.gg/reference/tournament.doc.html
     """
 
     def __init__(self, base_api):

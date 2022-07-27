@@ -1,7 +1,7 @@
-import pytest, datetime
+import pytest, datetime, os
 from startggapi import StartGGAPI
 
-api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
+api = StartGGAPI(os.environ.get('START_GG_KEY'))
 
 @pytest.mark.skip()
 def test_search_by_coords_and_time():
@@ -13,13 +13,12 @@ def test_search_by_coords_and_time():
 @pytest.mark.skip()
 def test_attendee_list():
     expected_event_id = 78790
-    api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
     response = api.entrant.find_all(78790)
     assert response["data"]["event"]["id"] == expected_event_id
 
+@pytest.mark.skip()
 def test_event_details():
     expected_event_id = 736029
-    api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
     response = api.event.find_all_entrants(736029)
     assert len(response) == expected_event_id
 
@@ -27,7 +26,13 @@ def test_event_details():
 @pytest.mark.skip()
 def test_find_by_tourney_slug():
     expected_event_id = 78790
-    api = StartGGAPI("1b4a4a0e13cb7c0d2120bc979a6243af")
     response = api.tournament.find_events_by_tournament_slug("shine-2018")
     assert type(response) == list
     assert response[0].keys() == ["name", "id"]
+
+def test_find_all_event_ids_by_slug():
+    ret = api.tournament.find_events_by_tournament_slug("mixed-up-2")
+    event_id = ret[0]["id"]
+    print(event_id)
+    ret = api.event.fetch_sets(event_id)
+    assert type(ret) == list
