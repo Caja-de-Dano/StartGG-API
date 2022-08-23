@@ -3,7 +3,7 @@ sets_query_by_event_id = """
     event(id: $eventId) {
       sets(
         page: 1,
-        perPage: 100,
+        perPage: 500,
         sortType: STANDARD
       ) {
         nodes {
@@ -54,8 +54,7 @@ query_by_distance = """
         endAt
       }
     }
-  }
-"""
+  }"""
 
 query_by_distance_and_time = """
   query Tournaments($perPage: Int, $coordinates: String!, $radius: String!, $beforeDate: Timestamp!, $afterDate: Timestamp!) {
@@ -81,6 +80,13 @@ query_by_distance_and_time = """
     }
   }
 """
+
+base_query_tournaments = """
+  query Tournaments(TOP_PARAMS) {
+    tournaments(query: QUERY) {
+      NODE_DEFINITION
+    }
+  }"""
 
 event_entrants_query = """
   query EventEntrants($eventId: ID!, $page: Int!, $perPage: Int!) {
