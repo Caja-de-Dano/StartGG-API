@@ -1,3 +1,3 @@
-__version__ = "0.1.3"
-__author__ = ""
+__version__ = "0.1.4"
+__author__ = "VOD Ripper"
 __title__ = "StartGGApi"
