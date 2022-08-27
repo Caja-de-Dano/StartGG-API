@@ -32,7 +32,6 @@ class EventApi:
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         return json.loads(response.content)
 
-
     def find_all_entrants(
         self,
         event_id: int,

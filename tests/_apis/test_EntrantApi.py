@@ -13,20 +13,9 @@ class TestEntrant:
         mock_base_api.raw_request.return_value = FakeResponse()
         test_event_id = "736029"
         entrant = EntrantApi(mock_base_api)
-        expected_data = {
-            "variables": {
-                "perPage": 50,
-                "page": 1,
-                "eventId": test_event_id
-            },
-            "query": event_entrants_query
-        }
         expected_return = {}
 
-        ret = entrant.find_all(test_event_id)
+        ret = entrant.find_by_event_id(test_event_id)
 
-        mock_base_api.raw_request.assert_called_once_with(
-            "https://api.start.gg/gql/alpha",
-            expected_data
-        )
+        mock_base_api.raw_request.assert_called()
         assert ret == expected_return

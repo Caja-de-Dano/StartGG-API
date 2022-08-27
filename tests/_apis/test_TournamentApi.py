@@ -11,7 +11,6 @@ class FakeResponse:
         self.content = "{}"
 
 @pytest.mark.skip()
-@pytest.mark.unit
 class TestTournamentApi:
     def test_find_by_coords(self):
         test_coords = "1,2"

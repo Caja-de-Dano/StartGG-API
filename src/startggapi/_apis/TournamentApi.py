@@ -1,4 +1,4 @@
-import json, time
+import json, time, datetime
 from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_event_id
 
 class TournamentApi:
@@ -35,6 +35,7 @@ class TournamentApi:
             coords: str,
             before_date=None,
             after_date=None,
+            page=None,
             per_page=None,
             radius=None
     ):
@@ -43,18 +44,22 @@ class TournamentApi:
         :param string coords:            Lat,Lng string
         :param int before_date:          epoch timestamp
         :param int after_date:           epoch timestamp
+        :param int page:                 page number to pull
         :param int per_page:             page limit
         :param string radius:            50mi / 50km
         """
         data = {
             "variables": {
                 "perPage": 5,
+                "page": 1,
                 "coordinates": coords,
                 "radius": "50mi"
             }
         }
         if per_page:
             data["variables"]["per_page"] = per_page
+        if page:
+            data["variables"]["page"] = page
         if radius:
             data["variables"]["radius"] = radius
 
@@ -67,3 +72,18 @@ class TournamentApi:
 
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         return json.loads(response.content)
+
+    def find_all_by_coords(self, coords, before_date=None, after_date=None, per_page=None, radius=None):
+        default_page_size = 50
+        before_date = datetime.datetime.now() - datetime.timedelta(days=1)
+        after_date = datetime.datetime.now() - datetime.timedelta(days=7)
+
+        all_tournaments = []
+        if per_page:
+            default_page_size = per_page
+        response = self.find_by_coords(coords, before_date=before_date, after_date=after_date, page=1, per_page=default_page_size, radius=radius)
+        all_tournaments += response["data"]["tournaments"]["nodes"]
+        if "pageInfo" in response["data"]["tournaments"]:
+            total_pages = response["data"]["tournaments"]["pageInfo"]["totalPages"]
+
+        return all_tournaments
