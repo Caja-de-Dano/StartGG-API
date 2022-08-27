@@ -90,7 +90,10 @@ query_by_distance_and_time = """
         city
         numAttendees
         slug
+        createdAt
         endAt
+        images { id }
+        links { facebook discord }
       }
     }
   }
