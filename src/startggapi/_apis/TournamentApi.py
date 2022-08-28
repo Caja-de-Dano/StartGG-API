@@ -75,9 +75,6 @@ class TournamentApi:
 
     def find_all_by_coords(self, coords, before_date=None, after_date=None, per_page=None, radius=None):
         default_page_size = 50
-        before_date = datetime.datetime.now() - datetime.timedelta(days=1)
-        after_date = datetime.datetime.now() - datetime.timedelta(days=7)
-
         all_tournaments = []
         if per_page:
             default_page_size = per_page
