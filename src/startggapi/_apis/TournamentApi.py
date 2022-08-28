@@ -79,7 +79,9 @@ class TournamentApi:
         if per_page:
             default_page_size = per_page
         response = self.find_by_coords(coords, before_date=before_date, after_date=after_date, page=1, per_page=default_page_size, radius=radius)
-        all_tournaments += response["data"]["tournaments"]["nodes"]
+        print(response)
+        if "data" in response:
+            all_tournaments += response["data"]["tournaments"]["nodes"]
         if "pageInfo" in response["data"]["tournaments"]:
             total_pages = response["data"]["tournaments"]["pageInfo"]["totalPages"]
             for i in range(total_pages+1):
