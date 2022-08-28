@@ -92,8 +92,25 @@ query_by_distance_and_time = """
         slug
         createdAt
         endAt
-        images { id }
+        images { id url type }
         links { facebook discord }
+        owner {
+          email
+          name
+          genderPronoun
+          authorizations {
+            externalUsername
+            type
+          }
+          tournaments {
+            nodes {
+              id
+              name
+              slug
+              numAttendees
+            }
+          }
+        }
       }
     }
   }
