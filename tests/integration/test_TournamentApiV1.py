@@ -13,8 +13,8 @@ def test_find_all_by_coords():
     assert len(response) is 390
 
 def test_find_all_by_coords_with_dates():
-    before_date = datetime.datetime.now() - datetime.timedelta(days=12)
-    after_date = datetime.datetime.now() - datetime.timedelta(days=14)
+    before_date = datetime.datetime.now() - datetime.timedelta(days=1)
+    after_date = datetime.datetime.now() - datetime.timedelta(days=200)
     response = api.tournament.find_all_by_coords("38.61593,-121.4760205", before_date=before_date, after_date=after_date)
     assert len(response) is 1
 

@@ -57,7 +57,7 @@ class TournamentApi:
             }
         }
         if per_page:
-            data["variables"]["per_page"] = per_page
+            data["variables"]["perPage"] = per_page
         if page:
             data["variables"]["page"] = page
         if radius:
