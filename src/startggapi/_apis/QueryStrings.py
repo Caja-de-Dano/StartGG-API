@@ -9,6 +9,7 @@ sets_query_by_event_id = """
         nodes {
           round
           fullRoundText
+          totalGames
           slots {
             entrant {
               name
