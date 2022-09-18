@@ -27,6 +27,9 @@ tournament_query_by_event_id = """
         tournament(slug: $slug) {
             id
             name
+            images {
+              url
+            }
             events {
                 id
                 name
