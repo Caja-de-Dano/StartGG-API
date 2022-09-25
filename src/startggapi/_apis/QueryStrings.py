@@ -197,6 +197,14 @@ videogame_details_by_id_query = """
             characters{
               id
               name
+              images{
+                id
+                height
+                width
+                ratio
+                type
+                url
+              }
 
             }
         }
@@ -220,6 +228,14 @@ videogame_details_by_slug_query = """
             characters{
               id
               name
+              images{
+                id
+                height
+                width
+                ratio
+                type
+                url
+              }
 
             }
         }
