@@ -11,7 +11,8 @@ def test_search_by_coords():
 def test_find_all_by_coords():
     response = api.tournament.find_all_by_coords("38.61593,-121.4760205")
     assert len(response) is 390
-
+    
+@pytest.mark.skip()
 def test_find_all_by_coords_with_dates():
     before_date = datetime.datetime.now() - datetime.timedelta(days=1)
     after_date = datetime.datetime.now() - datetime.timedelta(days=200)
@@ -64,6 +65,13 @@ def test_find_all_event_ids_by_slug():
 
 @pytest.mark.unit
 def test_find_videogame_by_id():
-    response = api.videogame.get_videogame_details(1)   # id: 1 == Super Smash Bros. Melee
+    response = api.videogame.get_videogame_by_id(1)   # id: 1 == Super Smash Bros. Melee
     assert response["data"]["videogame"]["name"] == "Super Smash Bros. Melee"
     assert type(response) == dict
+
+@pytest.mark.unit
+def test_find_videogame_by_slug():
+    response = api.videogame.get_videogame_by_slug("Melee")
+    assert response["data"]["videogame"]["name"] == "Super Smash Bros. Melee"
+    assert type(response) == dict
+

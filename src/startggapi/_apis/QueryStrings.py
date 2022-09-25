@@ -180,13 +180,18 @@ event_details_query = """
     }
 """
 
-videogame_details_query = """
+videogame_details_by_id_query = """
     query VideogameDetails($id: ID!) {
         videogame(id: $id) {
             id
             name
             slug
             images{
+              id
+              height
+              width
+              ratio
+              type
               url
             }
             characters{
@@ -197,3 +202,28 @@ videogame_details_query = """
         }
     }
 """
+
+videogame_details_by_slug_query = """
+    query VideogameDetails($slug: String!) {
+        videogame(slug: $slug) {
+            id
+            name
+            slug
+            images{
+              id
+              height
+              width
+              ratio
+              type
+              url
+            }
+            characters{
+              id
+              name
+
+            }
+        }
+    }
+"""
+
+

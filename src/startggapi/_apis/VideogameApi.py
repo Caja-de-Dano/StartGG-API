@@ -1,6 +1,6 @@
 import json
 
-from .QueryStrings import videogame_details_query
+from .QueryStrings import videogame_details_by_id_query, videogame_details_by_slug_query
 
 class VideogameApi:
     """
@@ -15,7 +15,7 @@ class VideogameApi:
         """
         self._base = base_api
 
-    def get_videogame_details(
+    def get_videogame_by_id(
             self,
             id: int,
     ):
@@ -27,7 +27,24 @@ class VideogameApi:
             "variables": {
                 "id": str(id)
             },
-            "query": videogame_details_query
+            "query": videogame_details_by_id_query
+        }
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        return json.loads(response.content)
+
+    def get_videogame_by_slug(
+            self,
+            slug: str,
+    ):
+        """
+        Get all available details for a videogame using the slug
+        :returns: dict
+        """
+        data = {
+            "variables": {
+                "slug": slug
+            },
+            "query": videogame_details_by_slug_query
         }
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         print(response)
