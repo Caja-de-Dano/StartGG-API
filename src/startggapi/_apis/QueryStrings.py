@@ -181,12 +181,19 @@ event_details_query = """
 """
 
 videogame_details_query = """
-    query VideogameDetails($videogameId: ID!) {
-          videogame(id: $videogameId) {
+    query VideogameDetails($id: ID!) {
+        videogame(id: $id) {
             id
-            characters
-            displayName
-            images
             name
             slug
-            """
+            images{
+              url
+            }
+            characters{
+              id
+              name
+
+            }
+        }
+    }
+"""

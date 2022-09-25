@@ -25,9 +25,10 @@ class VideogameApi:
         """
         data = {
             "variables": {
-                "videogameId": str(id)
+                "id": str(id)
             },
             "query": videogame_details_query
         }
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        print(response)
         return json.loads(response.content)

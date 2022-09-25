@@ -59,6 +59,11 @@ def test_find_by_tourney_slug():
 def test_find_all_event_ids_by_slug():
     ret = api.tournament.find_events_by_tournament_slug("mixed-up-2")
     event_id = ret[0]["id"]
-    print(event_id)
     ret = api.event.fetch_sets(event_id)
     assert type(ret) == list
+
+@pytest.mark.unit
+def test_find_videogame_by_id():
+    response = api.videogame.get_videogame_details(1)   # id: 1 == Super Smash Bros. Melee
+    assert response["data"]["videogame"]["name"] == "Super Smash Bros. Melee"
+    assert type(response) == dict
