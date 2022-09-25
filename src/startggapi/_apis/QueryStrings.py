@@ -179,3 +179,14 @@ event_details_query = """
         }
     }
 """
+
+videogame_details_query = """
+    query VideogameDetails($videogameId: ID!) {
+          videogame(id: $videogameId) {
+            id
+            characters
+            displayName
+            images
+            name
+            slug
+            """

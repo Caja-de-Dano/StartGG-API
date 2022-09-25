@@ -1,4 +1,4 @@
-from ._apis import BaseApi, TournamentApi, EntrantApi, EventApi
+from ._apis import BaseApi, TournamentApi, EntrantApi, EventApi, VideogameApi
 
 class StartGGAPI:
     def __init__(self, api_key):
@@ -8,6 +8,7 @@ class StartGGAPI:
         self._tournament = TournamentApi(self._base_api)
         self._entrant = EntrantApi(self._base_api)
         self._event = EventApi(self._base_api)
+        self._videogame = VideogameApi(self._base_api)
 
     @property
     def tournament(self):
@@ -20,3 +21,7 @@ class StartGGAPI:
     @property
     def entrant(self):
         return self._entrant
+
+    @property
+    def videogame(self):
+        return self._videogame
