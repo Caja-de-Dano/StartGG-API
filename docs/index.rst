@@ -39,3 +39,4 @@ creating and building your own documentation from scratch.
    startggapi/EventApi
    startggapi/EntrantApi
    startggapi/TournamentApi
+   startggapi/VideogameApi

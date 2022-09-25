@@ -16,6 +16,5 @@ class TestEntrant:
         expected_return = {}
 
         ret = entrant.find_by_event_id(test_event_id)
-
         mock_base_api.raw_request.assert_called()
         assert ret == expected_return
