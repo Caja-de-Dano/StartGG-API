@@ -57,6 +57,11 @@ def test_find_by_tourney_slug():
     assert type(response) == list
     assert response[0].keys() == ["name", "id"]
 
+def test_find_tournament_by_slug():
+    response = api.tournament.find_tournament_by_slug("mixed-up-2")
+    assert type(response) == dict
+    assert response["name"] == "Mixed Up #2"
+
 def test_find_all_event_ids_by_slug():
     ret = api.tournament.find_events_by_tournament_slug("mixed-up-2")
     event_id = ret[0]["id"]
@@ -74,4 +79,5 @@ def test_find_videogame_by_slug():
     response = api.videogame.get_videogame_by_slug("Melee")
     assert response["data"]["videogame"]["name"] == "Super Smash Bros. Melee"
     assert type(response) == dict
+
 
