@@ -1,5 +1,5 @@
 import json, time, datetime
-from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_event_id
+from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_slug
 
 class TournamentApi:
     """
@@ -25,7 +25,7 @@ class TournamentApi:
             "variables": {
                 "slug": tourney_slug
             },
-            "query": tournament_query_by_event_id
+            "query": tournament_query_by_slug
         }
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         return json.loads(response.content)["data"]["tournament"]["events"]

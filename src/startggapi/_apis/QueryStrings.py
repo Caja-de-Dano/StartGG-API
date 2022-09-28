@@ -22,7 +22,7 @@ sets_query_by_event_id = """
 
 """
 
-tournament_query_by_event_id = """
+tournament_query_by_slug = """
     query FindEventId($slug: String!) {
         tournament(slug: $slug) {
             id
@@ -30,6 +30,12 @@ tournament_query_by_event_id = """
             events {
                 id
                 name
+            }
+            images{
+              id
+              url
+              height
+              width
             }
         }
     }
