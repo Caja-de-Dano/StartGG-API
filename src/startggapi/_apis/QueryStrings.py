@@ -27,6 +27,8 @@ tournament_query_by_slug = """
         tournament(slug: $slug) {
             id
             name
+            numAttendees
+            startAt
             events {
                 id
                 name
