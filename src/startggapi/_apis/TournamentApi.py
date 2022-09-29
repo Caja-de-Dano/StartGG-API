@@ -47,7 +47,6 @@ class TournamentApi:
         }
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         return json.loads(response.content)["data"]["tournament"]
-    
 
     def find_by_coords(
             self,
