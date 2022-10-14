@@ -32,6 +32,11 @@ tournament_query_by_slug = """
             events {
                 id
                 name
+                videogame {
+                    id
+                    displayName
+                    slug
+                }
             }
             images{
               id
