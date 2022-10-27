@@ -144,6 +144,32 @@ event_base_query = """
     }
   }
 """
+
+event_entrants_names_query = """
+  query EventEntrants($eventId: ID!, $page: Int!, $perPage: Int!) {
+    event(id: $eventId) {
+      id
+      name
+      entrants(query: {
+        page: $page
+        perPage: $perPage
+      }) {
+        pageInfo {
+          total
+          totalPages
+        }
+        nodes {
+          id
+          participants {
+            id
+            gamerTag
+          }
+        }
+      }
+    }
+  }
+"""
+
 event_entrants_query = """
   query EventEntrants($eventId: ID!, $page: Int!, $perPage: Int!) {
     event(id: $eventId) {

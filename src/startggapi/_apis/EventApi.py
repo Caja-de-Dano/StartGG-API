@@ -1,6 +1,6 @@
 import json
 
-from .QueryStrings import event_entrants_query, event_details_query, sets_query_by_event_id
+from .QueryStrings import event_entrants_query, event_details_query, sets_query_by_event_id, event_entrants_names_query
 
 class EventApi:
     """
@@ -51,7 +51,7 @@ class EventApi:
                 "page": 1,
                 "eventId": str(event_id)
             },
-            "query": event_entrants_query
+            "query": event_entrants_names_query
         }
         if per_page:
             data["variables"]["per_page"] = per_page
