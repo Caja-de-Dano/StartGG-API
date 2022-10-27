@@ -60,6 +60,7 @@ class EventApi:
 
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         response_json = json.loads(response.content)
+        print(response_json)
         entrant_list += response_json["data"]["event"]["entrants"]["nodes"]
 
         current_page = 1
