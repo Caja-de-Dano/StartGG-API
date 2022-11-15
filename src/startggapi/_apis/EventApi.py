@@ -93,6 +93,8 @@ class EventApi:
             "query": sets_query_by_event_id
         }
 
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        response_json = json.loads(response.content)
         current_page = 1
         while current_page <= response_json['data']['event']['sets']['pageInfo']['totalPages']:
             data["variables"]["page"] = current_page
