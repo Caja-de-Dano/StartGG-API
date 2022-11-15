@@ -84,12 +84,21 @@ class EventApi:
         :param event_id
         """
         set_list = []
+        page_num = 1
         data = {
             "variables": {
-                "eventId": str(event_id)
+                "eventId": str(event_id),
+                "page": 1
             },
             "query": sets_query_by_event_id
         }
-        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
-        response_json = json.loads(response.content)
-        return response_json["data"]["event"]["sets"]["nodes"]
+
+        current_page = 1
+        while current_page <= response_json['data']['event']['sets']['pageInfo']['totalPages']:
+            data["variables"]["page"] = current_page
+            response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+            response_json = json.loads(response.content)
+            set_list += response_json["data"]["event"]["sets"]["nodes"]
+            current_page += 1
+
+        return set_list
