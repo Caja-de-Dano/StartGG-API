@@ -1,13 +1,15 @@
 sets_query_by_event_id = """
-  query FindSets($eventId: ID!) {
+  query FindSets($eventId: ID!, $page: Int!) {
     event(id: $eventId) {
       sets(
-        page: 1,
-        perPage: 500,
+        page: $page,
+        perPage: 100,
         sortType: STANDARD
       ) {
+        pageInfo {
+          totalPages
+        }
         nodes {
-          round
           fullRoundText
           totalGames
           slots {
