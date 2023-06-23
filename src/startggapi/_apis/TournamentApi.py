@@ -1,5 +1,5 @@
 import json, time, datetime
-from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_slug
+from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_slug, tournament_contact_query_by_slug, general_tournament_search_query
 
 class TournamentApi:
     """
@@ -13,6 +13,16 @@ class TournamentApi:
         :param BaseApi base_api: the root API object for making all requests.
         """
         self._base = base_api
+
+    def fetch_contact_info(self, tourney_slug):
+        data = {
+            "variables": {
+                "slug": tourney_slug
+            },
+            "query": tournament_contact_query_by_slug
+        }
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        return json.loads(response.content)["data"]
 
     def find_events_by_tournament_slug(
             self,
@@ -47,6 +57,23 @@ class TournamentApi:
         }
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         return json.loads(response.content)["data"]["tournament"]
+
+    def find_online_tournaments(self):
+        # TODO: do the things here
+        before_date = (datetime.datetime.now() - datetime.timedelta(days=1))
+        after_date = (datetime.datetime.now() - datetime.timedelta(days=8))
+        data = {
+            "variables": {
+                "beforeDate": round(time.mktime(before_date.timetuple()) + before_date.microsecond/1e6),
+                "afterDate": round(time.mktime(after_date.timetuple()) + after_date.microsecond/1e6),
+                "perPage": 100
+            }
+        }
+
+        data["query"] = general_tournament_search_query
+
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        return json.loads(response.content)["data"]["tournaments"]["nodes"]
 
     def find_by_coords(
             self,

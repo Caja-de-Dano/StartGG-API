@@ -23,7 +23,42 @@ sets_query_by_event_id = """
   }
 
 """
-
+tournament_contact_query_by_slug = """
+    query FindEventId($slug: String!) {
+        tournament(slug: $slug) {
+            id
+            name
+            numAttendees
+            startAt
+            primaryContact
+            primaryContactType
+            owner {
+              name
+              email
+              genderPronoun
+              slug
+              authorizations {
+                type
+                externalUsername
+              }
+            }
+            streams {
+              id
+              streamName
+              streamSource
+            }
+            events {
+                id
+                name
+                videogame {
+                    id
+                    displayName
+                    slug
+                }
+            }
+        }
+    }
+"""
 tournament_query_by_slug = """
     query FindEventId($slug: String!) {
         tournament(slug: $slug) {
@@ -34,6 +69,7 @@ tournament_query_by_slug = """
             events {
                 id
                 name
+                numAttendees
                 videogame {
                     id
                     displayName
@@ -86,7 +122,38 @@ query_by_distance = """
       }
     }
   }"""
+general_tournament_search_query = """
+  query Tournaments($perPage: Int, $beforeDate: Timestamp!, $afterDate: Timestamp!) {
+    tournaments(query: {
+      perPage: $perPage
+      filter: {
+        beforeDate: $beforeDate,
+        afterDate: $afterDate,
+        hasOnlineEvents: true,
+        videogameIds: 43868
+      }
+    }) {
+      nodes {
+        name
+        numAttendees
+        slug
+        endAt
+        primaryContact
+        primaryContactType
 
+        links { facebook discord }
+        owner {
+          name
+          genderPronoun
+          authorizations {
+            externalUsername
+            type
+          }
+        }
+      }
+    }
+  }
+"""
 query_by_distance_and_time = """
   query Tournaments($perPage: Int, $coordinates: String!, $radius: String!, $beforeDate: Timestamp!, $afterDate: Timestamp!) {
     tournaments(query: {
