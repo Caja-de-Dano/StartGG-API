@@ -69,7 +69,7 @@ tournament_query_by_slug = """
             events {
                 id
                 name
-                numAttendees
+                numEntrants
                 videogame {
                     id
                     displayName
