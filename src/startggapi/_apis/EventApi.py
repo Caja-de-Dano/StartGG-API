@@ -1,6 +1,8 @@
 import json
 
-from .QueryStrings import event_entrants_query, event_details_query, sets_query_by_event_id, event_entrants_names_query
+from .QueryStrings import event_details_query, sets_query_by_event_id, event_entrants_names_query, \
+    sets_query_from_phaseGroup_from_phase
+
 
 class EventApi:
     """
@@ -33,11 +35,11 @@ class EventApi:
         return json.loads(response.content)
 
     def find_all_entrants(
-        self,
-        event_id: int,
-        page: int=None,
-        per_page: int=None,
-        ):
+            self,
+            event_id: int,
+            page: int = None,
+            per_page: int = None,
+    ):
         """
         This function returns a list of entrants for a given event
         :param int event_id:             start.gg eventId
@@ -76,9 +78,9 @@ class EventApi:
         return entrant_list
 
     def fetch_sets(
-        self,
-        event_id,
-        ):
+            self,
+            event_id,
+    ):
         """
         Returns a list of Sets for the event_id
         :param event_id
@@ -88,7 +90,7 @@ class EventApi:
         data = {
             "variables": {
                 "eventId": str(event_id),
-                "page": 1
+                "page": page_num
             },
             "query": sets_query_by_event_id
         }
@@ -101,6 +103,37 @@ class EventApi:
             response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
             response_json = json.loads(response.content)
             set_list += response_json["data"]["event"]["sets"]["nodes"]
+            current_page += 1
+
+        return set_list
+
+    def fetch_sets_in_phase(
+            self,
+            phase_id,
+    ):
+        """
+        Returns a list of Sets for the phase_id
+        :param phase_id
+        """
+        set_list = []
+        page_num = 1
+        data = {
+            "variables": {
+                "phaseId": str(phase_id),
+                "page": page_num
+            },
+            "query": sets_query_from_phaseGroup_from_phase
+        }
+
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        response_json = json.loads(response.content)
+        print(f"response_json : {response_json}")
+        current_page = 1
+        while current_page <= response_json['data']['phaseGroup']['sets']['pageInfo']['totalPages']:
+            data["variables"]["page"] = current_page
+            response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+            response_json = json.loads(response.content)
+            set_list += response_json["data"]["phaseGroup"]["sets"]["nodes"]
             current_page += 1
 
         return set_list
