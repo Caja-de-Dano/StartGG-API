@@ -402,6 +402,7 @@ sets_query_from_phaseGroup_from_phase = """
             id
             fullRoundText
             identifier
+            totalGames
             slots {
               entrant {
                 id
