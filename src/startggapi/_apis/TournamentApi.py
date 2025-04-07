@@ -1,5 +1,7 @@
 import json, time, datetime
-from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_slug, tournament_contact_query_by_slug, general_tournament_search_query
+from .QueryStrings import query_by_distance, query_by_distance_and_time, tournament_query_by_slug, \
+    tournament_contact_query_by_slug, general_tournament_search_query, tournament_query_by_slug_heavy
+
 
 class TournamentApi:
     """
@@ -40,10 +42,9 @@ class TournamentApi:
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
         return json.loads(response.content)["data"]["tournament"]["events"]
 
-
     def find_tournament_by_slug(
-        self,
-        slug: str
+            self,
+            slug: str
     ):
         """
         This function returns a tournament by a given slug
@@ -64,8 +65,8 @@ class TournamentApi:
         after_date = (datetime.datetime.now() - datetime.timedelta(days=8))
         data = {
             "variables": {
-                "beforeDate": round(time.mktime(before_date.timetuple()) + before_date.microsecond/1e6),
-                "afterDate": round(time.mktime(after_date.timetuple()) + after_date.microsecond/1e6),
+                "beforeDate": round(time.mktime(before_date.timetuple()) + before_date.microsecond / 1e6),
+                "afterDate": round(time.mktime(after_date.timetuple()) + after_date.microsecond / 1e6),
                 "perPage": 100
             }
         }
@@ -111,8 +112,9 @@ class TournamentApi:
         lookup_query = query_by_distance
         if before_date and after_date:
             lookup_query = query_by_distance_and_time
-            data["variables"]["beforeDate"] = round(time.mktime(before_date.timetuple()) + before_date.microsecond/1e6)
-            data["variables"]["afterDate"] = round(time.mktime(after_date.timetuple()) + after_date.microsecond/1e6)
+            data["variables"]["beforeDate"] = round(
+                time.mktime(before_date.timetuple()) + before_date.microsecond / 1e6)
+            data["variables"]["afterDate"] = round(time.mktime(after_date.timetuple()) + after_date.microsecond / 1e6)
         data["query"] = lookup_query
 
         response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
@@ -123,16 +125,36 @@ class TournamentApi:
         all_tournaments = []
         if per_page:
             default_page_size = per_page
-        response = self.find_by_coords(coords, before_date=before_date, after_date=after_date, page=1, per_page=default_page_size, radius=radius)
+        response = self.find_by_coords(coords, before_date=before_date, after_date=after_date, page=1,
+                                       per_page=default_page_size, radius=radius)
         print(response)
         if "data" in response:
             all_tournaments += response["data"]["tournaments"]["nodes"]
         if "pageInfo" in response["data"]["tournaments"]:
             total_pages = response["data"]["tournaments"]["pageInfo"]["totalPages"]
-            for i in range(total_pages+1):
+            for i in range(total_pages + 1):
                 if i == 0 or i == 1:
                     continue
-                response = self.find_by_coords(coords, before_date=before_date, after_date=after_date, page=i, per_page=default_page_size, radius=radius)
+                response = self.find_by_coords(coords, before_date=before_date, after_date=after_date, page=i,
+                                               per_page=default_page_size, radius=radius)
                 if "data" in response:
                     all_tournaments += response["data"]["tournaments"]["nodes"]
         return all_tournaments
+
+    def find_events_by_tournament_slug_heavy(
+            self,
+            tourney_slug: str
+    ):
+        """
+        This function retrieves a lot more data than the principal tournament_query_by_slug
+        It uses the query tournament_query_by_slug_heavy
+        """
+        data = {
+            "variables": {
+                "tourneySlug": tourney_slug
+            },
+            "query": tournament_query_by_slug_heavy
+        }
+        response = self._base.raw_request("https://api.start.gg/gql/alpha", data)
+        print(response.content)
+        return json.loads(response.content)["data"]["tournament"]["events"]
