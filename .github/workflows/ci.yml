@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    #branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install pylint
+      - run: pylint src/startggapi/**
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: install and build
+        run: |
+          pip install build
+          pip install pytest
+          python -m build
+          pip install dist/*.whl
+      - run: pytest
+        env:
+          START_GG_KEY: ${{ secrets.START_GG_KEY }}
+
